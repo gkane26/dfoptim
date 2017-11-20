@@ -1,0 +1,17 @@
+Package: dfoptim
+Type: Package
+Title: Derivative-Free Optimization
+Version: 2017.11-1
+Date: 2017-11-21
+Authors@R: c(person("Ravi", "Varadhan", role=c("aut", "cre")),
+             person("Hans W.", "Borchers", role=c("ctb")))
+Description: Derivative-Free optimization algorithms. These algorithms 
+    do not require gradient information. More importantly, they can be 
+    used to solve non-smooth optimization problems.
+Author: Ravi Varadhan, Johns Hopkins University, and 
+        Hans W. Borchers, ABB Corporate Research.
+Maintainer: Ravi Varadhan <ravi.varadhan@jhu.edu>
+URL: https://github.com/hwborchers/dfoptim/
+Depends: R (>= 2.14.1)
+License: GPL (>= 2)
+ByteCompile: true
