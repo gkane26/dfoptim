@@ -83,21 +83,7 @@
 #' xm1 <- nmk(fn=rosbkext, par=p0) # maximum `fevals' is not sufficient to find correct minimum
 #' xm1b <- nmkb(fn=rosbkext, par=p0, lower=-2, upper=2)
 #' 
-#' ### A non-smooth problem
-#' hald <- function(x) {
-#' #Hald J & Madsen K (1981), Combined LP and quasi-Newton methods 
-#' #for minimax optimization, Mathematical Programming, 20, p.42-62.
-#' 	i <- 1:21
-#' 	t <- -1 + (i - 1)/10
-#' 	f <- (x[1] + x[2] * t) / ( 1 + x[3]*t + x[4]*t^2 + x[5]*t^3) - exp(t)
-#' 	max(abs(f))
-#' 	}
-#' 
-#' p0 <- runif(5)
-#' xm2 <- nmk(fn=hald, par=p0)
-#' xm2b <- nmkb(fn=hald, par=p0, lower=c(0,0,0,0,-2), upper=4)
-#' 
-#' ## Another non-smooth functions
+#' # A non-smooth functions
 #'   nsf <- function(x) {
 #' 	f1 <- x[1]^2 + x[2]^2
 #' 	f2 <- x[1]^2 + x[2]^2 + 10 * (-4*x[1] - x[2] + 4)
@@ -153,9 +139,9 @@ function(par, fn, control=list(), ...) {
 	V <- V[, ord]
 	
 	rho <- 1
-	gamma <- 0.5
-	chi <- 2
-	sigma <- 0.5
+	gamma <- 0.75 - 1.0/(2*n)
+	chi   <- 1.0 + 2.0/n
+	sigma <- 1.0 - 1.0/n
 	conv <- 1
 	oshrink <- 0
 	restarts <- 0

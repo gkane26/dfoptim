@@ -2,11 +2,14 @@
   dfoptim                                                               NEWS
 ------------------------------------------------------------------------------
 
-Changes in version 2017.11-1 (2017-11-21)
+Changes in version 2017.11-2 (2017-11-20)
 
   * Opened a repository on Github for this package
+  * nmk() and nmkb() implement the adaptive Nelder-Mead
+    version by Gao and Han (2012).
+  * Changed the non-smooth example for nmk().
 
-Changes in version 2016.7-1 (2011-07-08)
+Changes in version 2016.7-1 (2014-07-08)
 
   * Used a slightly modified code for hjk() and hjkb()
 
