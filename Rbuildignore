@@ -1,0 +1,14 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
+^README-.*\.png$
+^\.travis\.yml$
+^appveyor\.yml$
+^cran-comments\.md$
+^docs$
+^README_cache$
+^_pkgdown\.yml$
+^example$
+^\.gitattributes$
+^vignettes/mandelbrot\.Rmd$
+^revdep$
