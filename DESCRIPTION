@@ -8,7 +8,7 @@ Description: Derivative-Free optimization algorithms. These algorithms
     used to solve non-smooth optimization problems.
 Authors@R: c(person("Ravi", "Varadhan", role=c("aut", "cre"),
                     email="ravi.varadhan@jhu.edu"),
-             person("Hans W.", "Borchers", role=c("ctb")))
+             person("Hans W.", "Borchers", role=c("aut")))
 URL: https://github.com/hwborchers/dfoptim/
 Depends: R (>= 2.14.1)
 License: GPL (>= 2)
