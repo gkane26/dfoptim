@@ -139,11 +139,11 @@ function(par, fn, control=list(), ...) {
 	V <- V[, ord]
 	
 	rho <- 1
-	gamma <- 0.75 - 1.0/(2*n)
-	chi   <- 1.0 + 2.0/n
-	sigma <- 1.0 - 1.0/n
+	gamma <- 0.5
+	chi <- 2
+	sigma <- 0.5
 	conv <- 1
-	oshrink <- 0
+	oshrink <- 1
 	restarts <- 0
 	orth <- 0
 	dist <- f[n+1] - f[1]
@@ -151,7 +151,7 @@ function(par, fn, control=list(), ...) {
 	v <- V[, -1] - V[, 1]
 	delf <- f[-1] - f[1]
 	diam <- sqrt(colSums(v^2))
-	sgrad <- c(crossprod(t(v), delf))
+	sgrad <- c(solve(t(v), delf))
 	alpha <- 1.e-04 * max(diam) / sqrt(sum(sgrad^2))
 	simplex.size <- sum(abs(V[, -1] - V[, 1])) / max(1, sum(abs(V[, 1])))
 
@@ -250,7 +250,7 @@ function(par, fn, control=list(), ...) {
 		f[is.nan(f)] <- Inf
 
 		dist <- f[n+1] - f[1]
-		sgrad <- c(crossprod(t(v), delf))
+		sgrad <- c(solve(t(v), delf))
 		if (trace & !(itc %% 2)) cat("iter: ", itc, "\n", "value: ", f[1], "\n")
 	}
 
@@ -267,4 +267,3 @@ function(par, fn, control=list(), ...) {
 
 	return(list(par = V[, 1], value=f[1]*(-1)^maximize, feval=nf, restarts=restarts, convergence=conv, message=message))
 }
-
