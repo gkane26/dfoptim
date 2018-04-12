@@ -1,3 +1,13 @@
+## dfoptim 2018.2-1 (2018-04-01)
+
+  * Set oshrink=1 to enable "restarting" of Nelder-Mead 
+    due to stagnation (thanks to Simon Wessing)
+
+## dfoptim 2017.12-1 (2017-12-20)
+
+  * fixed a bug in the code, which impacts the "restarting" 
+    of Nelder-Mead due to stagnation (thanks to Simon Wessing)
+
 ## dfoptim 2017.11-2 (2017-11-20)
 
   * Opened a repository on Github for this package
