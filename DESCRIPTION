@@ -1,8 +1,8 @@
 Package: dfoptim
 Type: Package
 Title: Derivative-Free Optimization
-Version: 2017.11-2
-Date: 2017-11-20
+Version: 2018.2-1
+Date: 2018-02-18
 Description: Derivative-Free optimization algorithms. These algorithms 
     do not require gradient information. More importantly, they can be 
     used to solve non-smooth optimization problems.
