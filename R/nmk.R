@@ -1,33 +1,33 @@
 #' Nelder-Mead optimziation algorithm for derivative-free optimization
-#' 
+#'
 #' An implementation of the Nelder-Mead algorithm for derivative-free
 #' optimization.  This allows bounds to be placed on parameters. Bounds are
 #' enforced by means of a parameter transformation.
-#' 
+#'
 #' Argument \code{control} is a list specifing any changes to default values of
 #' algorithm control parameters for the outer loop.  Note that the names of
 #' these must be specified completely.  Partial matching will not work.  The
 #' list items are as follows:
-#' 
+#'
 #' \code{tol} Convergence tolerance.  Iteration is terminated when the absolute
 #' difference in function value between successive iteration is below
 #' \code{tol}.  Default is 1.e-06.
-#' 
+#'
 #' \code{maxfeval}: Maximum number of objective function evaluations allowed.
 #' Default is min(5000, max(1500, 20*length(par)^2)).
-#' 
+#'
 #' \code{regsimp} A logical variable indicating whether the starting parameter
 #' configuration is a regular simplex.  Default is TRUE.
-#' 
+#'
 #' \code{maximize} A logical variable indicating whether the objective function
 #' should be maximized.  Default is FALSE.
-#' 
+#'
 #' \code{restarts.max} Maximum number of times the algorithm should be
 #' restarted before declaring failure. Default is 3.
-#' 
+#'
 #' \code{trace} A logical variable indicating whether the starting parameter
 #' configuration is a regular simplex.  Default is FALSE.
-#' 
+#'
 #' @aliases nmk nmkb
 #' @param par A starting vector of parameter values. Must be feasible, i.e. lie
 #' strictly between lower and upper bounds.
@@ -45,18 +45,18 @@
 #' @param \dots Additional arguments passed to \code{fn}
 #' @return A list with the following components: \item{par}{Best estimate of
 #' the parameter vector found by the algorithm.}
-#' 
+#'
 #' \item{value}{The value of the objective function at termination.}
-#' 
+#'
 #' \item{feval}{The number of times the objective \code{fn} was evaluated. }
-#' 
+#'
 #' \item{restarts}{The number of times the algorithm had to be restarted when
 #' it stagnated. }
-#' 
+#'
 #' \item{convergence}{An integer code indicating type of convergence.  \code{0}
 #' indicates successful convergence. Positive integer codes indicate failure to
 #' converge.  }
-#' 
+#'
 #' \item{message}{Text message indicating the type of convergence or failure.
 #' }
 #' @note This algorithm is based on the Matlab code of Prof. C.T. Kelley, given
@@ -69,20 +69,20 @@
 #' @references C.T. Kelley (1999), Iterative Methods for Optimization, SIAM.
 #' @keywords optimize
 #' @examples
-#' 
+#'
 #'  rosbkext <- function(x){
 #' # Extended Rosenbrock function
 #'  n <- length(x)
 #'  sum (100*(x[1:(n-1)]^2 - x[2:n])^2 + (x[1:(n-1)] - 1)^2)
 #'  }
-#' 
+#'
 #' np <- 10
 #' set.seed(123)
-#' 
+#'
 #' p0 <- rnorm(np)
 #' xm1 <- nmk(fn=rosbkext, par=p0) # maximum `fevals' is not sufficient to find correct minimum
 #' xm1b <- nmkb(fn=rosbkext, par=p0, lower=-2, upper=2)
-#' 
+#'
 #' # A non-smooth functions
 #'   nsf <- function(x) {
 #' 	f1 <- x[1]^2 + x[2]^2
@@ -92,13 +92,13 @@
 #'   }
 #' par0 <- c(1, 1)                                 # true min 7.2 at (1.2, 2.4)
 #' nmk(par0, nsf) # fmin=8 at xmin=(2,2)
-#' 
-#' 
+#'
+#'
 nmk <-
 function(par, fn, control=list(), ...) {
     ctrl <- list(tol=1.e-06, maxfeval = min(5000, max(1500, 20*length(par)^2)), regsimp=TRUE, maximize=FALSE, restarts.max=3, trace=FALSE)
 	namc <- match.arg(names(control), choices=names(ctrl), several.ok=TRUE)
-    if (!all(namc %in% names(ctrl))) 
+    if (!all(namc %in% names(ctrl)))
         stop("unknown names in control: ", namc[!(namc %in% names(ctrl))])
     if (!is.null(names(control))) ctrl[namc] <- control
     ftol <- ctrl$tol
@@ -108,7 +108,7 @@ function(par, fn, control=list(), ...) {
     maximize <- ctrl$maximize
     trace <- ctrl$trace
 
-	if (maximize) fnm <- function(par, ...) -fn(par, ...) else fnm <- function(par, ...) fn(par, ...) 
+	if (maximize) fnm <- function(par, ...) -fn(par, ...) else fnm <- function(par, ...) fn(par, ...)
 
 	x0 <- par
 	n <- length(par)
@@ -125,10 +125,10 @@ function(par, fn, control=list(), ...) {
 		alpha <- scale / (n * sqrt(2)) * c(sqrt(n+1) + n - 1, sqrt(n+1) -1)
 		V[, -1] <- (x0 + alpha[2])
 		diag(V[, -1]) <- x0[1:n] + alpha[1]
-		for (j in 2:ncol(V)) f[j] <- fnm(V[,j], ...) 
+		for (j in 2:ncol(V)) f[j] <- fnm(V[,j], ...)
 	} else {
-		V[, -1] <- x0 + scale * V[, -1] 
-		for (j in 2:ncol(V)) f[j] <- fnm(V[,j], ...) 
+		V[, -1] <- x0 + scale * V[, -1]
+		for (j in 2:ncol(V)) f[j] <- fnm(V[,j], ...)
 	}
 
 	f[is.nan(f)] <- Inf
@@ -137,7 +137,7 @@ function(par, fn, control=list(), ...) {
 	ord <- order(f)
 	f <- f[ord]
 	V <- V[, ord]
-	
+
 	rho <- 1
 	gamma <- 0.5
 	chi <- 2
@@ -147,7 +147,7 @@ function(par, fn, control=list(), ...) {
 	restarts <- 0
 	orth <- 0
 	dist <- f[n+1] - f[1]
-	
+
 	v <- V[, -1] - V[, 1]
 	delf <- f[-1] - f[1]
 	diam <- sqrt(colSums(v^2))
@@ -250,7 +250,7 @@ function(par, fn, control=list(), ...) {
 		f[is.nan(f)] <- Inf
 
 		dist <- f[n+1] - f[1]
-		sgrad <- c(solve(t(v), delf))
+		sgrad <- tryCatch(c(solve(t(v), delf)), error = function(e) sgrad)
 		if (trace & !(itc %% 2)) cat("iter: ", itc, "\n", "value: ", f[1], "\n")
 	}
 
@@ -263,7 +263,7 @@ function(par, fn, control=list(), ...) {
 		} else if (restarts >= restarts.max) {
 		conv <- 2
 		message <- "Stagnation in Nelder-Mead"
-		}	
+		}
 
 	return(list(par = V[, 1], value=f[1]*(-1)^maximize, feval=nf, restarts=restarts, convergence=conv, message=message))
 }
